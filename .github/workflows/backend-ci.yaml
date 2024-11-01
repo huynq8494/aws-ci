@@ -27,6 +27,7 @@ jobs:
         run: |
           cd backend
           pipenv install
+          pipenv install flake8
 
       # Run the linter.
       - name: Run the linter
