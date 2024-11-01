@@ -5,6 +5,9 @@ on:
   pull_request:       # Trigger CI on pull_requests events against the main branch
     branches:
       - main
+  push:               # FIXME: Delete this before submit
+    branches:
+      - main
 
 jobs:
   lint:
@@ -16,18 +19,22 @@ jobs:
       # Install the dependencies.
       - run: |
           cd backend
+          pip install pipenv
           pipenv install
 
       # Run the linter.
       - run: |
           cd backend
-          npm run lint
+          pipenv run lint
 
   test:
     runs-on: ubuntu-latest
     steps:
       # Check out the code from the repository.
       - uses: actions/checkout@v3
+
+      # Install pipenv
+      - uses: kojoru/prepare-pipenv@v1
 
       # Install the dependencies.
       - run: |
@@ -37,7 +44,7 @@ jobs:
       # Run the tests.
       - run: |
           cd backend
-          pipenv run lint
+          pipenv run test
 
   build:
     runs-on: ubuntu-latest
