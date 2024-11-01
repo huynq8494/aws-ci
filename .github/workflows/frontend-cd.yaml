@@ -2,9 +2,9 @@ name: "Frontend Continuous Deployment"
 
 on:
   workflow_dispatch:  # Trigger CD manual
-  push:               # Trigger CD on push events against the main branch
-    branches:
-      - main
+  # push:               # Trigger CD on push events against the main branch
+  #   branches:
+  #     - main
 
 env:
   NODE_VERSION: '18.x'

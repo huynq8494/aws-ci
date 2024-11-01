@@ -2,9 +2,9 @@ name: "Backend Continuous Deployment"
 
 on:
   workflow_dispatch:  # Trigger CD manual
-  # push:               # Trigger CD on push events against the main branch
-  #   branches:
-  #     - main
+  push:               # Trigger CD on push events against the main branch
+    branches:
+      - main
 
 env:
   NODE_VERSION: '18.x'
@@ -91,6 +91,10 @@ jobs:
 
       # Deploy Kubernetes Manifests
       - name: Deploy Kubernetes Manifests
+        env:
+          REGISTRY: ${{steps.login-ecr.outputs.registry}}
+          REPOSITORY: backend
+          IMAGE_TAG: ${{github.sha}}
         run: |
           cd backend/k8s
           aws eks --region ${{env.REGION}} update-kubeconfig --name cluster
