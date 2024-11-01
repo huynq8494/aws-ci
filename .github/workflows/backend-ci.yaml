@@ -2,9 +2,9 @@ name: "Backend Continuous Integration"
 
 on:
   workflow_dispatch:  # Trigger CI manual
-  pull_request:       # Trigger CI on pull_requests events against the main branch
-    branches:
-      - main
+  # pull_request:       # Trigger CI on pull_requests events against the main branch
+  #   branches:
+  #     - main
 
 jobs:
   lint:

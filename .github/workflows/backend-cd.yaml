@@ -9,6 +9,7 @@ on:
 env:
   NODE_VERSION: '18.x'
   REGION: 'us-east-1'
+  PYTHON_VER: '3.10'
 
 jobs:
   lint:
@@ -20,7 +21,7 @@ jobs:
       # Install pipenv
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: ${{env.PYTHON_VER}}
       - run: pip install pipenv
 
       # Install the dependencies.
@@ -83,7 +84,6 @@ jobs:
           REGISTRY: ${{steps.login-ecr.outputs.registry}}
           REPOSITORY: backend
           IMAGE_TAG: ${{github.sha}}
-          URL: ${{vars.REACT_APP_MOVIE_API_URL}}
         run: |
           cd backend
           docker build --tag=$REGISTRY/$REPOSITORY:$IMAGE_TAG .
