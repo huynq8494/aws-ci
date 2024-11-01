@@ -96,3 +96,5 @@ jobs:
           aws eks --region ${{env.REGION}} update-kubeconfig --name cluster
           kustomize edit set image backend=$REGISTRY/$REPOSITORY:$IMAGE_TAG
           kustomize build | kubectl apply -f -
+          docker run --name mp-backend -d $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          curl http://a83464b8f011247e993718ca81bf4fa5-1518642323.us-east-1.elb.amazonaws.com/movies
