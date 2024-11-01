@@ -101,8 +101,9 @@ jobs:
           cd frontend
           aws eks --region ${{env.REGION}} update-kubeconfig --name cluster
           URL=$(kubectl get service backend -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-          docker build --build-arg=REACT_APP_MOVIE_API_URL=$URL --tag=$REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker build --build-arg=REACT_APP_MOVIE_API_URL=http://$URL --tag=$REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          echo "URL=http://$URL"
 
       # Deploy Kubernetes Manifests
       - name: Deploy Kubernetes Manifests
