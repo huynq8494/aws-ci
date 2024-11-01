@@ -90,7 +90,9 @@ jobs:
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       # Deploy Kubernetes Manifests
-      - run: |
+      - name: Deploy Kubernetes Manifests
+        run: |
+          cd backend/k8s
           aws eks --region ${{env.REGION}} update-kubeconfig --name cluster
           kustomize edit set image backend=$REGISTRY/$REPOSITORY:$IMAGE_TAG
           kustomize build | kubectl apply -f -
