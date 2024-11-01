@@ -2,9 +2,9 @@ name: "Frontend Continuous Deployment"
 
 on:
   workflow_dispatch:  # Trigger CD manual
-  # push:               # Trigger CD on push events against the main branch
-  #   branches:
-  #     - main
+  push:               # Trigger CD on push events against the main branch
+    branches:
+      - main
 
 env:
   NODE_VERSION: '18.x'
@@ -29,12 +29,14 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
 
       # Install the dependencies.
-      - run: |
+      - name: Install the dependencies
+        run: |
           cd frontend
           npm ci
 
       # Run the linter.
-      - run: |
+      - name: Run the linter
+        run: |
           cd frontend
           npm run lint
 
@@ -56,12 +58,14 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
 
       # Install the dependencies.
-      - run: |
+      - name: Install the dependencies
+        run: |
           cd frontend
           npm ci
 
       # Run the tests.
-      - run: |
+      - name: Run the tests
+        run: |
           cd frontend
           CI=true npm test
 
@@ -101,6 +105,6 @@ jobs:
 
       # Deploy Kubernetes Manifests
       - run: |
-          aws eks --region ${env.REGION} update-kubeconfig --name cluster
+          aws eks --region ${{env.REGION}} update-kubeconfig --name cluster
           kustomize edit set image frontend=$REGISTRY/$REPOSITORY:$IMAGE_TAG
           kustomize build | kubectl apply -f -
