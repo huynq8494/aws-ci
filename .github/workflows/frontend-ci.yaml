@@ -1,6 +1,10 @@
 name: "Frontend Continuous Integration"
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:  # Trigger CI manual
+  pull_request:       # Trigger CI on pull_requests events against the main branch
+    branches:
+      - main
 
 env:
   # Set Node.js Version
@@ -70,5 +74,5 @@ jobs:
 
       # Build the application using docker
       - run: |
-        cd frontend
-        docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=mp-frontend:latest .
+          cd frontend
+          docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=mp-frontend:latest .

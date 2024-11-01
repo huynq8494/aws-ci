@@ -1,7 +1,10 @@
 name: "Frontend Continuous Deployment"
 
 on:
-  workflow_dispatch
+  workflow_dispatch:  # Trigger CD manual
+  push:               # Trigger CD on push events against the main branch
+    branches:
+      - main
 
 env:
   NODE_VERSION: '18.x'
@@ -98,6 +101,6 @@ jobs:
 
       # Deploy Kubernetes Manifests
       - run: |
-        aws eks --region ${env.REGION} update-kubeconfig --name cluster
-        kustomize edit set image frontend=$REGISTRY/$REPOSITORY:$IMAGE_TAG
-        kustomize build | kubectl apply -f -
+          aws eks --region ${env.REGION} update-kubeconfig --name cluster
+          kustomize edit set image frontend=$REGISTRY/$REPOSITORY:$IMAGE_TAG
+          kustomize build | kubectl apply -f -

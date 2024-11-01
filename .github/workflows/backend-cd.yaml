@@ -1,8 +1,8 @@
 name: "Backend Continuous Deployment"
 
 on:
-  workflow_dispatch
-  pull_request:
+  workflow_dispatch:  # Trigger CD manual
+  push:               # Trigger CD on push events against the main branch
     branches:
       - main
 
@@ -74,6 +74,6 @@ jobs:
 
       # Deploy Kubernetes Manifests
       - run: |
-        aws eks --region ${env.REGION} update-kubeconfig --name cluster
-        kustomize edit set image backend=$REGISTRY/$REPOSITORY:$IMAGE_TAG
-        kustomize build | kubectl apply -f -
+          aws eks --region ${env.REGION} update-kubeconfig --name cluster
+          kustomize edit set image backend=$REGISTRY/$REPOSITORY:$IMAGE_TAG
+          kustomize build | kubectl apply -f -
