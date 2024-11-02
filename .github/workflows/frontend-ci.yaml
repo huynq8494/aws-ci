@@ -5,6 +5,8 @@ on:
   pull_request:       # Trigger CI on pull_requests events against the main branch
     branches:
       - main
+    paths:
+      - "frontend/**"
 
 env:
   # Set Node.js Version
@@ -75,6 +77,29 @@ jobs:
     steps:
       # Check out the code from the repository.
       - uses: actions/checkout@v3
+
+      # Set up a Node.js environment using the specified node version.
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{env.NODE_VERSION}}
+
+      # Perform a cache action to restore cache before dependency install
+      - uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
+
+      # Install the dependencies.
+      - name: Install the dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      # Run the tests.
+      - name: Run the tests
+        run: |
+          cd frontend
+          CI=true npm test
 
       # Build the application using docker
       - name: Build the application using docker

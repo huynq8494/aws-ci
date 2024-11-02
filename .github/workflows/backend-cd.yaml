@@ -5,6 +5,8 @@ on:
   push:               # Trigger CD on push events against the main branch
     branches:
       - main
+    paths:
+      - "backend/**"
 
 env:
   NODE_VERSION: '18.x'

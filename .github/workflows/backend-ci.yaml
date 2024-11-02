@@ -5,6 +5,8 @@ on:
   pull_request:       # Trigger CI on pull_requests events against the main branch
     branches:
       - main
+    paths:
+      - "backend/**"
 
 jobs:
   lint:
