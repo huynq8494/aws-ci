@@ -24,17 +24,12 @@
   ```bash
   cd setup; ./init.sh
   ```
-6. After the application deploy successfully, we can get the external-ip of backend LoadBalancer from
-  - Github Actions run logs
-    <img src="screenshots/from_github_actions_run_logs.png" alt="drawing" width=800/>
-  - Cloud Console
-    <img src="screenshots/from_cloud_console.png" alt="drawing" width=800/>
-  - Run `kubectl get service backend`
-    <img src="screenshots/from_run_kubectl.png" alt="drawing" width=800/>
+6. After the application deploy successfully, we can get the external-ip by run `kubectl get service -A`
 
-  In my case, it is `a83464b8f011247e993718ca81bf4fa5-1518642323.us-east-1.elb.amazonaws.com`
-  I can use my browser to check: http://a83464b8f011247e993718ca81bf4fa5-1518642323.us-east-1.elb.amazonaws.com/movies
-    <img src="screenshots/results.png" alt="drawing" width=800/>
+  <img src="screenshots/get_external_ip.png" alt="drawing" width=800/>
+
+  In my case, I can use my browser to check: http://a8ab0ead698b143b7bfc4efc15918578-1614039876.us-east-1.elb.amazonaws.com
+  <img src="screenshots/results.png" alt="drawing" width=800/>
 
 ## Deliverables
 1. README.md: `README.md`
@@ -47,3 +42,4 @@
 2. I got crashing when run `terraform apply` -> I need to got to Cloud Console to manual delete resource before re-run `terraform apply`.
 3. In previous courses, I knew how to get LoadBalancer public address. Then I try to get this value in workflow and use this as an agurment for frontend docker build.
 4. When I run github action, I got some error, but the logs are very detail and clear, from that logs, I can easier detect the root cause. Disable passed portion help me save alot of time. For example, I got issue in backend CD, I will disable the rest (backend/frontend CI, frontend CI) and also `lint` and `test` jobs.
+5. Use `kubectl get pods` to make sure all backend, frontend service are working. In case any service is not working use `kubectl describe pod <pod_name>` to debug.
